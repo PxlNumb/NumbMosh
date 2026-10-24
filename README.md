@@ -1,6 +1,6 @@
 # NumbMosh
 
-![image alt][https://github.com/PxlNumb/NumbMosh/blob/1fcddf7e683afaf178d10f1d51d1e52d7349a4d9/GUI%20v0.1.0.png]
+![image alt](https://github.com/PxlNumb/NumbMosh/blob/1fcddf7e683afaf178d10f1d51d1e52d7349a4d9/GUI%20v0.1.0.png)
 
 # Datamosh for DaVinci Resolve
 
