@@ -32,8 +32,16 @@ Uninstall: `install.bat -Uninstall`. macOS/Linux: `./install.sh` (untested in Re
 https://github.com/user-attachments/assets/ff936233-304e-40d3-b0a0-9d62570736b5
 
 - **Melt at Frame (remove keyframe)**: makes a cut at the Start Frame (Fake Cut Jump) and removes its keyframe. The old picture melts under the motion of the new content for Melt Length frames.
+
+*not working*
+
 - **Smear / Bloom (repeat motion)**: removes a keyframe and repeats the next P-frame, so the motion smears and blooms.
+
+https://github.com/user-attachments/assets/66c2fd4e-8a78-4f3e-8ad1-e8c20e15147c
+
 - **Stutter (repeat frames)**: repeats a block of frames.
+
+https://github.com/user-attachments/assets/22786283-23af-45eb-a5f4-1329bc6bf2c3
 
 Why the fake cut: a datamosh needs a cut. With one clip and no cut, removing a keyframe changes almost nothing. The jump creates the cut. The result is shorter by that many frames, and the audio is cut the same way.
 
