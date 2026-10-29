@@ -28,6 +28,7 @@ Uninstall: `install.bat -Uninstall`. macOS/Linux: `./install.sh` (untested in Re
 
 ## Mosh types
 - **Auto Melt (at scene cuts)**: removes the keyframe at every scene cut, so each cut melts into the next shot. If the clip has no cuts, a fake cut is made at the Start Frame.
+
 https://github.com/user-attachments/assets/ff936233-304e-40d3-b0a0-9d62570736b5
 
 - **Melt at Frame (remove keyframe)**: makes a cut at the Start Frame (Fake Cut Jump) and removes its keyframe. The old picture melts under the motion of the new content for Melt Length frames.
