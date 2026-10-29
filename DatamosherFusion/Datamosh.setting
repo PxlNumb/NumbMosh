@@ -1,0 +1,213 @@
+{
+	Tools = ordered() {
+		Datamosh = MacroOperator {
+			CtrlWZoom = false,
+			NameSet = true,
+			Inputs = ordered() {
+				Source = Input { Value = "", },
+				Effect = Input { Value = 0, },
+				Start = Input { Value = 30, },
+				Length = Input { Value = 60, },
+				BlockLength = Input { Value = 8, },
+				Repeats = Input { Value = 20, },
+				Sensitivity = Input { Value = 0.3, },
+				Jump = Input { Value = 30, },
+				AudioMode = Input { Value = 1, },
+				Pitch = Input { Value = -5, },
+				Format = Input { Value = 0, },
+				ResultClip = InstanceInput {
+					SourceOp = "DatamoshResult",
+					Source = "Clip",
+					Name = "Result",
+				},
+			},
+			Outputs = {
+				MainOutput1 = InstanceOutput {
+					SourceOp = "DatamoshResult",
+					Source = "Output",
+				},
+			},
+			ViewInfo = GroupInfo {
+				Pos = { 0, 0 },
+			},
+			Tools = ordered() {
+				DatamoshResult = Loader {
+					CtrlWZoom = false,
+					ViewInfo = OperatorInfo { Pos = { 0, 0 }, },
+				},
+			},
+			UserControls = ordered() {
+				Source = {
+					LINKS_Name = "Video File (empty = automatic)",
+					LINKID_DataType = "Text",
+					INPID_InputControl = "FileControl",
+					INP_Default = "",
+					ICS_ControlPage = "Controls",
+				},
+				Effect = {
+					LINKS_Name = "Mosh Type",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "ComboControl",
+					INP_Default = 0,
+					INP_Integer = true,
+					ICS_ControlPage = "Controls",
+					{ CCS_AddString = "Auto Melt (at scene cuts)", },
+					{ CCS_AddString = "Melt at Frame (remove keyframe)", },
+					{ CCS_AddString = "Smear / Bloom (repeat motion)", },
+					{ CCS_AddString = "Stutter (repeat frames)", },
+				},
+				Start = {
+					LINKS_Name = "Effect Start Frame",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 30,
+					INP_Integer = true,
+					INP_MinAllowed = 1,
+					INP_MaxScale = 600,
+					ICS_ControlPage = "Controls",
+				},
+				Length = {
+					LINKS_Name = "Melt Length (frames, 0 = until the end)",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 60,
+					INP_Integer = true,
+					INP_MinAllowed = 0,
+					INP_MaxScale = 300,
+					ICS_ControlPage = "Controls",
+				},
+				BlockLength = {
+					LINKS_Name = "Stutter Block Length (frames)",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 8,
+					INP_Integer = true,
+					INP_MinAllowed = 1,
+					INP_MaxScale = 120,
+					ICS_ControlPage = "Controls",
+				},
+				Repeats = {
+					LINKS_Name = "Repeat Count (Smear / Stutter)",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 20,
+					INP_Integer = true,
+					INP_MinAllowed = 1,
+					INP_MaxScale = 200,
+					ICS_ControlPage = "Controls",
+				},
+				Sensitivity = {
+					LINKS_Name = "Scene Cut Sensitivity (lower = more cuts)",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 0.3,
+					INP_MinAllowed = 0.05,
+					INP_MaxAllowed = 0.95,
+					ICS_ControlPage = "Controls",
+				},
+				Jump = {
+					LINKS_Name = "Fake Cut Jump (frames, 0 = off)",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = 30,
+					INP_Integer = true,
+					INP_MinAllowed = 0,
+					INP_MaxScale = 300,
+					ICS_ControlPage = "Controls",
+				},
+				AudioMode = {
+					LINKS_Name = "Audio",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "ComboControl",
+					INP_Default = 1,
+					INP_Integer = true,
+					ICS_ControlPage = "Controls",
+					{ CCS_AddString = "No audio", },
+					{ CCS_AddString = "Original audio (synced to the edit)", },
+					{ CCS_AddString = "Pitch shift the moshed part", },
+					{ CCS_AddString = "Glitch / bug the moshed part", },
+					{ CCS_AddString = "Pitch shift + glitch", },
+				},
+				Pitch = {
+					LINKS_Name = "Pitch Shift (semitones)",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "SliderControl",
+					INP_Default = -5,
+					INP_Integer = true,
+					INP_MinScale = -12,
+					INP_MaxScale = 12,
+					INP_MinAllowed = -12,
+					INP_MaxAllowed = 12,
+					ICS_ControlPage = "Controls",
+				},
+				Format = {
+					LINKS_Name = "Output Format",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "ComboControl",
+					INP_Default = 0,
+					INP_Integer = true,
+					ICS_ControlPage = "Controls",
+					{ CCS_AddString = "H.264 (.mp4)", },
+					{ CCS_AddString = "ProRes (.mov)", },
+				},
+				Render = {
+					LINKS_Name = "RENDER DATAMOSH",
+					LINKID_DataType = "Number",
+					INPID_InputControl = "ButtonControl",
+					INP_Default = 0,
+					BTNCS_Execute = [[
+local d
+if package.config:sub(1, 1) == "\\" then
+  d = os.getenv("APPDATA") .. "\\Blackmagic Design\\DaVinci Resolve\\Support\\Fusion\\DatamoshFusion\\"
+else
+  local h = os.getenv("HOME") or ""
+  d = h .. "/Library/Application Support/Blackmagic Design/DaVinci Resolve/Fusion/DatamoshFusion/"
+  local f = io.open(d .. "config.txt", "r")
+  if f then f:close() else d = h .. "/.local/share/DaVinciResolve/Fusion/DatamoshFusion/" end
+end
+local t = tool or comp.ActiveTool
+local function g(id, def)
+  local ok, v = pcall(function() return t:GetInput(id) end)
+  if ok and v ~= nil then return v end
+  return def
+end
+local function status(s)
+  pcall(function() t:SetInput("Status", s) end)
+  print("[Datamosh] " .. s)
+end
+local ok_load, M = pcall(dofile, d .. "DatamoshRun.lua")
+if not ok_load then status("Not installed. Run the installer again.") return end
+status("Rendering... Resolve may freeze for a moment.")
+local out, err = M.run(comp, {
+  source = g("Source", ""), effect = g("Effect", 0), start = g("Start", 30),
+  melt_length = g("Length", 60), block_length = g("BlockLength", 8),
+  repeats = g("Repeats", 20), scene = g("Sensitivity", 0.3),
+  jump = g("Jump", 30), audio = g("AudioMode", 1), pitch = g("Pitch", -5),
+  prores = (g("Format", 0) == 1),
+})
+if not out then status("Error: " .. tostring(err)) return end
+pcall(function() t:SetInput("ResultClip", out) end)
+if g("ResultClip", "") ~= out then
+  local ld = comp:AddTool("Loader", -32768, -32768)
+  ld.Clip = out
+  status("Done. Result added as a new Loader: " .. out:match("[^/\\]+$"))
+else
+  status("Done: " .. out:match("[^/\\]+$"))
+end
+]],
+					ICS_ControlPage = "Controls",
+				},
+				Status = {
+					LINKS_Name = "Status / Result",
+					LINKID_DataType = "Text",
+					INPID_InputControl = "TextEditControl",
+					TEC_ReadOnly = true,
+					TEC_Lines = 3,
+					INP_External = false,
+					ICS_ControlPage = "Controls",
+				},
+			},
+		},
+	},
+	ActiveTool = "Datamosh"
+}
